@@ -1,0 +1,9 @@
+# Project-wide ShellCheck settings
+shell=bash
+external-sources=true
+source-path=SCRIPTDIR
+
+# Optional checks worth enabling
+enable=avoid-nullary-conditions
+enable=check-unassigned-uppercase
+enable=quote-safe-variables

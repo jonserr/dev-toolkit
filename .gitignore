@@ -1,0 +1,167 @@
+# General .gitignore for Python, Java, Node, containers, and HPC projects
+# Also copied into new projects by tooling/new-project.sh
+
+# ---------------------------------------------------------------------------
+# Secrets and environment
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+id_rsa*
+id_ed25519*
+credentials.json
+secrets/
+.netrc
+
+# ---------------------------------------------------------------------------
+# Operating systems
+# ---------------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*~
+.directory
+.Trash-*
+
+# ---------------------------------------------------------------------------
+# Editors and IDEs
+# ---------------------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+.*.sw?
+\#*\#
+.\#*
+*.sublime-workspace
+.project
+.classpath
+.settings/
+.history/
+
+# ---------------------------------------------------------------------------
+# AI agents
+# ---------------------------------------------------------------------------
+.claude/settings.local.json
+.aider*
+.cursor/
+.codex/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+*.egg-info/
+*.egg
+.eggs/
+wheels/
+pip-wheel-metadata/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyright/
+.dmypy.json
+.tox/
+.nox/
+.hypothesis/
+.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------------
+# Java and JVM
+# ---------------------------------------------------------------------------
+*.class
+*.jar
+*.war
+*.ear
+!gradle/wrapper/gradle-wrapper.jar
+!.mvn/wrapper/maven-wrapper.jar
+target/
+.gradle/
+out/
+hs_err_pid*
+replay_pid*
+
+# ---------------------------------------------------------------------------
+# Node and frontend
+# ---------------------------------------------------------------------------
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/*
+!.yarn/releases
+.next/
+.nuxt/
+.turbo/
+.vite/
+.parcel-cache/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------------------------------------------------------------------------
+# Build output and test reports
+# ---------------------------------------------------------------------------
+build/
+dist/
+reports/
+coverage/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+junit*.xml
+*.cover
+
+# ---------------------------------------------------------------------------
+# Logs, temp files, and local data
+# ---------------------------------------------------------------------------
+logs/
+*.log
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+*.pid
+*.sqlite3
+*.db
+
+# ---------------------------------------------------------------------------
+# Containers, infrastructure, and HPC
+# ---------------------------------------------------------------------------
+*.sif
+.docker/
+docker-compose.override.yml
+compose.override.yaml
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+slurm-*.out
+*-[0-9]*.out
+*-[0-9]*.err
+core.[0-9]*

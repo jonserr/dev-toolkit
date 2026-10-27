@@ -1,0 +1,52 @@
+# Java build and tests, detects Maven or Gradle
+name: java-ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        java-version: ["17", "21"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java-version }}
+          cache: ${{ hashFiles('pom.xml') != '' && 'maven' || 'gradle' }}
+      - name: build and test
+        run: |
+          if [ -f pom.xml ]; then
+            mvn_cmd=mvn; [ -x mvnw ] && mvn_cmd=./mvnw
+            "$mvn_cmd" -B verify
+          elif [ -f build.gradle ] || [ -f build.gradle.kts ]; then
+            gradle_cmd=gradle; [ -x gradlew ] && gradle_cmd=./gradlew
+            "$gradle_cmd" build
+          else
+            echo "no pom.xml or build.gradle found"; exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-reports-java${{ matrix.java-version }}
+          path: |
+            target/surefire-reports/
+            build/reports/tests/
+          if-no-files-found: ignore
+          retention-days: 7

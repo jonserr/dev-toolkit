@@ -1,0 +1,68 @@
+[project]
+name = "my-project"
+version = "0.1.0"
+description = "One-line project description"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Jonathan Serrano" }]
+dependencies = []
+
+[project.scripts]
+my-project = "my_project.cli:main"
+
+# Pinned dev tools, update with: uv lock --upgrade-package <name>
+[dependency-groups]
+dev = [
+    "ruff==0.12.0",
+    "pytest==8.4.1",
+    "pytest-cov==6.2.1",
+    "mypy==1.16.1",
+]
+
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",  # pycodestyle
+    "F",       # pyflakes
+    "I",       # isort
+    "B",       # bugbear
+    "UP",      # pyupgrade
+    "S",       # bandit security
+    "SIM",     # simplify
+    "RUF",     # ruff-specific
+    "PTH",     # pathlib over os.path
+    "LOG",     # logging misuse
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert allowed in tests
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+markers = ["integration: needs external services"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true

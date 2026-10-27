@@ -1,0 +1,26 @@
+# General-purpose Python dependencies, pinned for reproducible installs
+# Install:  uv pip install -r requirements.txt
+# Migrate:  setup-uv.sh --to-pyproject  (moves these into pyproject.toml)
+# Update:   uv pip compile requirements.txt --upgrade
+# Delete lines a project does not need
+
+# Configuration and validation
+python-dotenv==1.1.1        # load .env files
+pydantic==2.11.7            # data validation with type hints
+pydantic-settings==2.10.1   # typed settings from env vars and .env
+PyYAML==6.0.2               # YAML config files
+
+# HTTP and resilience
+httpx==0.28.1               # sync and async HTTP client
+tenacity==9.1.2             # retry with backoff
+
+# CLI and terminal output
+typer==0.16.0               # CLI from type hints
+rich==14.0.0                # tables, progress bars, tracebacks
+
+# Development tools, also in pyproject.toml dev group
+ruff==0.12.0                # lint and format
+pytest==8.4.1               # tests
+pytest-cov==6.2.1           # coverage
+mypy==1.16.1                # type checks
+pre-commit==4.2.0           # git hooks

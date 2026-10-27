@@ -1,0 +1,39 @@
+# Node lint, tests, and build, skips scripts missing from package.json
+name: node-ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["20", "22"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npm run lint --if-present
+      - name: prettier check
+        run: |
+          if [ -x node_modules/.bin/prettier ]; then node_modules/.bin/prettier --check .
+          else echo "prettier not in devDependencies, skipping"; fi
+      - run: npm run test --if-present
+      - run: npm run build --if-present

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Java logging config for SLF4J + Logback, same format as logging.sh and logging.py
+  Format: TIMESTAMP | LEVEL | COMPONENT | MESSAGE
+  Destination: src/main/resources/logback.xml
+  Dependency: ch.qos.logback:logback-classic (Spring Boot includes it)
+  Env: LOG_LEVEL (TRACE|DEBUG|INFO|WARN|ERROR), LOG_DIR enables file output when appender is uncommented
+-->
+<configuration scan="false">
+
+  <property name="LOG_PATTERN"
+            value="%d{yyyy-MM-dd'T'HH:mm:ss'Z',UTC} | %-5level | %logger{0} | %msg%n%ex"/>
+
+  <!-- Console output on stderr, matches Bash and Python templates -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <target>System.err</target>
+    <encoder>
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <!-- Daily rolling file, 14 days retained, 1 GB cap -->
+  <!--
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_DIR:-logs}/app.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_DIR:-logs}/app.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+      <maxHistory>14</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+  -->
+
+  <!-- Quiets noisy libraries -->
+  <logger name="org.apache" level="WARN"/>
+  <logger name="org.hibernate" level="WARN"/>
+
+  <root level="${LOG_LEVEL:-INFO}">
+    <appender-ref ref="CONSOLE"/>
+    <!-- <appender-ref ref="FILE"/> -->
+  </root>
+
+</configuration>

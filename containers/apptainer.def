@@ -1,0 +1,30 @@
+# Build: apptainer build app.sif apptainer.def
+# Run:   apptainer run --cleanenv --bind "$PWD" app.sif --help
+# SLURM: CONTAINER_IMAGE=app.sif sbatch slurm-job.sbatch
+Bootstrap: docker
+From: python:3.12-slim-bookworm
+
+%labels
+    Maintainer Jonathan Serrano
+    Version 0.1.0
+
+%files
+    pyproject.toml /opt/app/pyproject.toml
+    uv.lock /opt/app/uv.lock
+    src /opt/app/src
+
+%environment
+    export PATH=/opt/app/.venv/bin:$PATH
+    export PYTHONUNBUFFERED=1
+
+%post
+    pip install --no-cache-dir uv==0.8.0
+    cd /opt/app
+    uv sync --locked --no-dev
+    rm -rf /root/.cache
+
+%runscript
+    exec my-project "$@"
+
+%test
+    my-project --help
